@@ -4,15 +4,15 @@ from requests.auth import HTTPBasicAuth
 
 
 # Diese Daten müssen angepasst werden:
-serial = "112100000000" # Seriennummer des Hoymiles Wechselrichters
-maximum_wr = 300 # Maximale Ausgabe des Wechselrichters
+serial = "123456789" # Seriennummer des Hoymiles Wechselrichters
+maximum_wr = 800 # Maximale Ausgabe des Wechselrichters
 minimum_wr = 100 # Minimale Ausgabe des Wechselrichters
 
-dtu_ip = '192.100.100.20' # IP Adresse von OpenDTU
+dtu_ip = '192.168.xxx.xxx' # IP Adresse von OpenDTU
 dtu_nutzer = 'admin' # OpenDTU Nutzername
-dtu_passwort = 'openDTU42' # OpenDTU Passwort
+dtu_passwort = 'xxxxxxx' # OpenDTU Passwort
 
-shelly_ip = '192.100.100.30' # IP Adresse von Shelly 3EM
+shelly_ip = '192.168.xxx.xxx' # IP Adresse von Shelly 3EM
 
 
 while True:
@@ -24,15 +24,15 @@ while True:
         reachable   = r['inverters'][0]['reachable'] # Ist DTU erreichbar?
         producing   = int(r['inverters'][0]['producing']) # Produziert der Wechselrichter etwas?
         altes_limit = int(r['inverters'][0]['limit_absolute']) # Altes Limit
-        power_dc    = r['inverters'][0]['AC']['0']['Power DC']['v']  # Lieferung DC vom Panel
-        power       = r['inverters'][0]['AC']['0']['Power']['v'] # Abgabe BKW AC in Watt
+        power       = r['total']['Power']['v'] # Abgabe BKW AC in Watt
     except:
         print('Fehler beim Abrufen der Daten von openDTU')
     try:
         # Nimmt Daten von der Shelly 3EM Rest-API und übersetzt sie in ein json-Format
-        phase_a     = requests.get(f'http://{shelly_ip}/emeter/0', headers={'Content-Type': 'application/json'}).json()['power']
-        phase_b     = requests.get(f'http://{shelly_ip}/emeter/1', headers={'Content-Type': 'application/json'}).json()['power']
-        phase_c     = requests.get(f'http://{shelly_ip}/emeter/2', headers={'Content-Type': 'application/json'}).json()['power']
+        jsonResponse = requests.get(f'http://{shelly_ip}/rpc/EM.GetStatus?id=0', headers={'Content-Type': 'application/json'}).json()
+        phase_a     = jsonResponse['a_act_power']
+        phase_b     = jsonResponse['b_act_power']
+        phase_c     = jsonResponse['c_act_power']
         grid_sum    = phase_a + phase_b + phase_c # Aktueller Bezug - rechnet alle Phasen zusammen
     except:
         print('Fehler beim Abrufen der Daten von Shelly 3EM')
@@ -40,7 +40,7 @@ while True:
     # Werte setzen
     print(f'\nBezug: {round(grid_sum, 1)} W, Produktion: {round(power, 1)} W, Verbrauch: {round(grid_sum + power, 1)} W')
     if reachable:
-        setpoint = grid_sum + altes_limit - 5 # Neues Limit in Watt
+        setpoint = grid_sum + altes_limit - 50 # Neues Limit in Watt
 
         # Fange oberes Limit ab
         if setpoint > maximum_wr:
