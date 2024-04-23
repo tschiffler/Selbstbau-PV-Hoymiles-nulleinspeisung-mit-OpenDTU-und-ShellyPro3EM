@@ -7,7 +7,8 @@ from requests.auth import HTTPBasicAuth
 serial = "123456789" # Seriennummer des Hoymiles Wechselrichters
 maximum_wr = 800 # Maximale Ausgabe des Wechselrichters
 minimum_wr = 100 # Minimale Ausgabe des Wechselrichters
-puffer = 100
+puffer = 100   # offset of the min overproducing - used to be sure not to recieve any power from supplier if there is enough power at home
+sleeptimer = 5 # count of seconds to sleep until next check
 
 dtu_ip = '192.168.xxx.xxx' # IP Adresse von OpenDTU
 dtu_nutzer = 'admin' # OpenDTU Nutzername
@@ -70,4 +71,4 @@ while True:
                 print('Fehler beim Senden der Konfiguration')
 
     sys.stdout.flush() # write out cached messages to stdout
-    time.sleep(5) # wait
+    time.sleep(sleeptimer) # wait
