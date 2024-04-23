@@ -5,7 +5,7 @@ from requests.auth import HTTPBasicAuth
 
 # Diese Daten müssen angepasst werden:
 serial = "123456789" # Seriennummer des Hoymiles Wechselrichters
-maximum_wr = 600 # Maximale Ausgabe des Wechselrichters
+maximum_wr = 800 # Maximale Ausgabe des Wechselrichters
 minimum_wr = 100 # Minimale Ausgabe des Wechselrichters
 puffer = 100   # offset of the min overproducing - used to be sure not to recieve any power from supplier if there is enough power at home
 sleeptimer = 5 # count of seconds to sleep until next check
