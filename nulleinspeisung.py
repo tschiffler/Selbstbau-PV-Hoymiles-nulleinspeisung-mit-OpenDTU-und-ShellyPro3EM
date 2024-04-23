@@ -7,6 +7,7 @@ from requests.auth import HTTPBasicAuth
 serial = "123456789" # Seriennummer des Hoymiles Wechselrichters
 maximum_wr = 800 # Maximale Ausgabe des Wechselrichters
 minimum_wr = 100 # Minimale Ausgabe des Wechselrichters
+puffer = 100
 
 dtu_ip = '192.168.xxx.xxx' # IP Adresse von OpenDTU
 dtu_nutzer = 'admin' # OpenDTU Nutzername
@@ -40,10 +41,11 @@ while True:
     # Werte setzen
     print(f'\nBezug: {round(grid_sum, 1)} W, Produktion: {round(power, 1)} W, Verbrauch: {round(grid_sum + power, 1)} W')
     if reachable:
-        setpoint = grid_sum + altes_limit - 50 # Neues Limit in Watt
+        setpoint = grid_sum + altes_limit + puffer # Neues Limit in Watt
 
-        # Fange oberes Limit ab
-        if setpoint > maximum_wr:
+        # Fange oberes Limit ab 
+        # wenn Strombezug vom Netzbetreiber => maximum
+        if setpoint > maximum_wr or grid_sum > 0:
             setpoint = maximum_wr
             print(f'Setpoint auf Maximum: {maximum_wr} W')
         # Fange unteres Limit ab
