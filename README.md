@@ -1,16 +1,11 @@
-# Achtung! bei OpenDTU gab es eine API Anpassung
+# Ziel des Forkes
 
-Dieses Skript ist nur kompatibel bis einschließlich Version V24.1.26 
+Der ursprüngliche Code funktioniert nicht mit der aktuellen Firmware der openDTU sowie dem Shelly Pro 3 EM. Da bei diese Komponenten zum Einsatz kommen, mussten ein paar Dinge im Code angepasst werden:
 
-# Nulleinspeisung Hoymiles HM-1500 mit OpenDTU & Python Steuerung
+- Anbindung der aktuellen openDTU Firmware
+- Anbindung der Shelly Pro 3 EM
 
-Dies ist ein Python-Skript, das den aktuellen Hausverbrauch aus einem Shelly 3EM ausliest, die Nulleinspeisung berechnet und die Ausgangsleistung eines Hoymiles-Wechselrichters mit Hilfe der OpenDTU entsprechend anpasst. Somit wird kein unnötiger Strom ins Betreibernetz abgegeben.
+Dazu habe ich noch eine kleine Optimierung in der Verarbeitung der Requests durchgeführt um unnötige Aufrufe zu vermeiden.
 
-![diagramm](media/diagramm.jpg)
-
-## Autoren und Anerkennung
-- Dieses Skript ist ein Fork von: https://gitlab.com/p3605/hoymiles-tarnkappe
-- Ein großes Lob und Dank an die OpenDTU community: https://github.com/tbnobody/OpenDTU
-
-## Wiki
-- Weitere Informationen finden Sie auf unserer Seite: https://selbstbau-pv.de/wissensbasis/nulleinspeisung-hoymiles-hm-1500-mit-opendtu-python-steuerung/
+## Fork-Quelle
+- Dieses Skript ist ein Fork von: /github.com/Selbstbau-PV/Selbstbau-PV-Hoymiles-nulleinspeisung-mit-OpenDTU-und-Shelly3EM
